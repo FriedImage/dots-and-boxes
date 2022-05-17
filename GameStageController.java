@@ -1,4 +1,4 @@
-package gr.csihu.ntolias;
+package gr.projects.dotsandboxes;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -9,11 +9,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
-/**
- * FXML Controller class
- *
- * @author George
- */
 public class GameStageController implements Initializable {
 
     @FXML
