@@ -7,7 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
-import javafx.scene.image.Image;
 
 /**
  * JavaFX App
@@ -21,8 +20,6 @@ public class App extends Application {
 
         // Stage settings (before loadfxml)
         menuStage.setResizable(false);
-        Image icon = new Image("icon.png");
-        menuStage.getIcons().add(icon);
         menuStage.setTitle("DnB: Main Menu");
         menuStage.setScene(scene);
         menuStage.show();
