@@ -1,4 +1,4 @@
-package gr.csihu.ntolias;
+package gr.projects.dotsandboxes;
 
 import java.io.IOException;
 import javafx.event.ActionEvent;
@@ -8,10 +8,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- *
- * @author George
- */
 public class MainController {
 
     private Stage stage;
