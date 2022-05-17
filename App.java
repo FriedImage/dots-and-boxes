@@ -1,4 +1,4 @@
- package gr.csihu.ntolias;
+ package gr.test.test;
 
 // Imports
 import javafx.application.Application;
