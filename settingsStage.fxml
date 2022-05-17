@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="settingsAnchorPane" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.csihu.ntolias.SettingsStageController">
+<AnchorPane fx:id="settingsAnchorPane" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.projects.dotsandboxes.SettingsStageController">
    <children>
       <AnchorPane layoutX="15.0" layoutY="14.0" prefHeight="54.0" prefWidth="370.0">
          <children>
