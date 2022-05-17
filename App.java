@@ -1,4 +1,4 @@
- package gr.test.test;
+ package gr.projects.dotsandboxes;
 
 // Imports
 import javafx.application.Application;
