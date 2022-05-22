@@ -1,82 +1,59 @@
-package gr.projects.dotsandboxes;
+package com.test.jfxgame;
 
+import com.test.jfxgame.GameLine.LineType;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
+import javafx.scene.shape.Box;
 import javafx.scene.shape.Line;
 
-public class GameStageController implements Initializable {
+public class GameController implements Initializable {
 
     @FXML
-    AnchorPane twoXtwoPane, threeXthreePane, fourXfourPane, fiveXfivePane;
+    Line line1;
 
     @FXML
-    Label p1Label, p2Label;
+    Line line2;
 
     @FXML
-    Line line1, line2, line3, line4;
-
-    boolean activatedProperty;
-
-    int tempSize;
-    String tempP1;
-    String tempP2;
+    Line line3;
 
     @FXML
-    Line[] arr = {line1, line2, line3, line4};
-    private Line line;
+    Line line4;
 
     
-    public Line getLine(Line line) {
-        return this.line;
-    }
+    private List<Box> boxs = new ArrayList<>();
+    private List<GameLine> gameLines = new ArrayList<>();
     
-    public void checkLine() {
-       getLine(this.line).setStroke(Color.RED);
+    GameLine findOrCreateGameLine(GameLine.LineType type, int column, int row) {
+        gameLines.forEach(gameLine -> {
+            if ()(gameLine.type == type) && (gameLine.column == column) && (gameLine.row == row) {
+                return gameLine;
+            }
+        });
+        GameLine gameLine = new GameLine(type, column, row);
+        gameLines.add(gameLine);
+        return gameLine;
     }
 
-    public void showPane(int size) {
-        tempSize = size;
-        switch (size) {
-            case 2:
-                twoXtwoPane.setDisable(false);
-                twoXtwoPane.setVisible(true);
-                break;
-            case 3:
-                threeXthreePane.setDisable(false);
-                threeXthreePane.setVisible(true);
-                break;
-            case 4:
-                fourXfourPane.setDisable(false);
-                fourXfourPane.setVisible(true);
-                break;
-            case 5:
-                fiveXfivePane.setDisable(false);
-                fiveXfivePane.setVisible(true);
-                break;
-            default:
-                twoXtwoPane.setDisable(false);
-                twoXtwoPane.setVisible(true);
-                break;
+    void populateBoard(int maxColumns, int maxRows) {
+        for (int column = 0; column < maxColumns; column++) {
+            for (int row = 0; row < maxRows; row++) {
+                GameLine topLine = findOrCreateGameLine(LineType.HORZ, column, row);
+                GameLine bottomLine = findOrCreateGameLine(LineType.HORZ, column, row + 1);
+                GameLine leftLine = findOrCreateGameLine(LineType.VERT, column, row);
+                GameLine rightLine = findOrCreateGameLine(LineType.VERT, column + 1, row);
+                boxs.add(new Box(column, row, topLine, bottomLine, leftLine, rightLine));
+            }
         }
-    }
-
-    public void displayNames(String p1, String p2) {
-        tempP1 = p1;
-        tempP2 = p2;
-        p1Label.setText(p1);
-        p2Label.setText(p2);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        
-        
     }
 
 }
