@@ -1,9 +1,7 @@
-module gr.projects.dotsandboxes {
+module com.test.jfxgame {
     requires javafx.controls;
     requires javafx.fxml;
-    requires java.base;
-    requires javafx.graphics;
 
-    opens gr.projects.dotsandboxes to javafx.fxml;
-    exports gr.projects.dotsandboxes;
+    opens com.test.jfxgame to javafx.fxml;
+    exports com.test.jfxgame;
 }
