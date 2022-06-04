@@ -5,10 +5,11 @@ public class GameLine {
     int column;
     int row;
 
-//    enum LineType {
-//        HORZ, VERT
-//    }
     LineType type;
+
+    enum LineType {
+        HORZ, VERT
+    }
 
     boolean activated;
 
@@ -17,5 +18,13 @@ public class GameLine {
         this.row = row;
         this.type = type;
         this.activated = false;
+    }
+
+    public boolean getActivatedProperty() {
+        return activated;
+    }
+
+    public void setActivatedProperty(boolean newActivated) {
+        this.activated = newActivated;
     }
 }
