@@ -10,20 +10,26 @@ public class GameBox {
 
     boolean completed;
 
-    private List<GameLine> linesOfBox = new ArrayList<>();
+    private final List<GameLine> sides = new ArrayList<>();
 
-    BoxOwner boxOwner;
+    private BoxOwner boxOwner;
 
-    GameLine line1, line2, line3, line4;
+    private GameLine line1, line2, line3, line4;
 
-//    enum BoxOwner {
-//        PLAYER1, PLAYER2, NONE
-//    }
-    GameBox(int column, int row, BoxOwner boxOwner, boolean completed, List<GameLine> linesOfBox) {
-        this.linesOfBox = linesOfBox.add(line1, line2, line3, line4);
-        this.column = column;
-        this.row = row;
-        this.boxOwner = (BoxOwner) BoxOwner.NONE;
+    private enum BoxOwner {
+        PLAYER1, PLAYER2, NONE
+    }
+
+    public boolean isAtLocation(int column, int row) {
+        return ((this.column == column) && (this.row == row));
+    }
+
+    GameBox(GameLine line1, GameLine line2, GameLine line3, GameLine line4, List<GameLine> sides) {
+//        this.column = column;
+//        this.row = row;
+        this.sides = sides.addAll(line1, line2, line3, line4); // says I can't add stuff to final types which makes sense, so that's why I didn't make that list final.
+        this.boxOwner = BoxOwner.NONE;
         this.completed = false;
     }
+
 }
