@@ -1,9 +1,6 @@
 package com.test.jfxgame;
 
-public class LineType {
-
-    private enum type {
-        HORZ,
-        VERT
-    }
+public enum LineType {
+    HORZ,
+    VERT
 }
