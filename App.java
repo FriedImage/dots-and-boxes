@@ -8,23 +8,25 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-
 public class App extends Application {
 
     private static Scene scene;
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("Game.fxml"));
+        // run game
+        new GameLogic().runGame();
+        // setup stage
+        Parent root = FXMLLoader.load(getClass().getResource("Game.fxml")); // fxml file for SceneBuilder
         scene = new Scene(root);
         stage.setTitle("game fx");
         stage.setScene(scene);
-        stage.show();
+        stage.show(); // vbox already initialized in SceneBuilder (Game.fxml)
     }
 
     public static void main(String[] args) {
-//        launch(args);
-        new GameLogic().runGame();
+        launch(args);
+//        new GameLogic().runGame(); - testing
     }
 
 }
