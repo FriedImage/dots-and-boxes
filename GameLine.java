@@ -1,5 +1,8 @@
 package com.test.jfxgame;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
 public class GameLine {
 
     int column;
@@ -7,21 +10,29 @@ public class GameLine {
 
     LineType type;
 
-    boolean activated;
+//    boolean activated;
+    final BooleanProperty activated = new SimpleBooleanProperty(false);
 
-    public boolean getActivatedProperty() {
-        return activated;
+    public BooleanProperty getActivatedProperty(GameLine line) {
+
+//        return activated;
+        if (line.activated.get()) {
+            return line.activated;
+        }
+        return null;
     }
 
     public void setActivatedProperty(boolean newActivated) {
-        this.activated = newActivated;
+//        this.activated = newActivated;
+        this.activated.set(newActivated);
     }
 
     GameLine(int column, int row, LineType type) {
         this.column = column;
         this.row = row;
         this.type = type;
-        this.activated = false;
+//        this.activated = false;
+        this.activated.set(false);
     }
 
 }
