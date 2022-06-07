@@ -3,6 +3,8 @@ package com.test.jfxgame;
 //import javafx.scene.shape.Box;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 public class GameLogic {
 
@@ -10,13 +12,15 @@ public class GameLogic {
     private final List<GameLine> gameLines = new ArrayList<>();
     private final List<GameLine> gameBoxs = new ArrayList<>();
 
-    BoxOwner activePlayer;
+//    BoxOwner activePlayer;
+    final ObjectProperty<BoxOwner> activePlayer = new SimpleObjectProperty<>(BoxOwner.NONE);
 
     void runGame() {
         // Setup Game
         populateBoard(2, 2);
 
-        activePlayer = BoxOwner.PLAYER1;
+//        activePlayer = BoxOwner.PLAYER1;
+        activePlayer.set(BoxOwner.PLAYER1);
         playLine(LineType.VERT, 0, 0);
         playLine(LineType.HORZ, 0, 0);
         playLine(LineType.VERT, 1, 1);
@@ -82,7 +86,9 @@ public class GameLogic {
         long startingCompleted = countCompletedBoxes();
 
         GameLine gameLine = findOrCreateGameLine(type, column, row);
-        gameLine.activated = true;
+//        gameLine.activated = true;
+        gameLine.activated.set(true);
+        assignCompletedBoxes();
 
         if (countCompletedBoxes() == startingCompleted) {
             flipCurrentPlayer();
@@ -91,17 +97,23 @@ public class GameLogic {
 
     private void assignCompletedBoxes() {
         for (GameBox gameBox : boxs) {
-            if (gameBox.isBoxComplete() && (gameBox.boxOwner.equals(BoxOwner.NONE))) {
-                gameBox.boxOwner = activePlayer;
+            if (gameBox.isBoxComplete() && (gameBox.boxOwner.equals(BoxOwner.NONE))) { // - equals problem
+//                gameBox.boxOwner = activePlayer;
+                gameBox.boxOwner.set(activePlayer.get()); // not sure if this is correct
             }
         }
     }
 
     private void flipCurrentPlayer() {
-        if (this.activePlayer == BoxOwner.PLAYER1) {
-            activePlayer = BoxOwner.PLAYER2;
+//        if (this.activePlayer.equals(activePlayer.set(BoxOwner.PLAYER1))) { // - doesn't work
+//        if (this.activePlayer.equals(BoxOwner.PLAYER1)) { // - equals problem
+//        if (this.activePlayer.get(BoxOwner.PLAYER1)) {  // - doesn't work
+        if (this.activePlayer.equals(BoxOwner.NONE)) { // testing code
+//            activePlayer = BoxOwner.PLAYER2;
+            activePlayer.set(BoxOwner.PLAYER2);
         } else {
-            activePlayer = BoxOwner.PLAYER1;
+//            activePlayer = BoxOwner.PLAYER1;
+            activePlayer.set(BoxOwner.PLAYER1);
         }
     }
 
@@ -111,12 +123,12 @@ public class GameLogic {
                 .filter(GameBox::isBoxComplete).count();
     }
 
-    // count completed boxes ( for-loop version - dont know if it works )
+    // count completed boxes ( for-loop version - doesn't work correctly )
 //    private long countCompletedBoxes() {
 //        long cnt = 0;
 //        for (GameBox gameBox : boxs) {
 //            if (gameBox.completed) {
-//                ++cnt;
+//                cnt += 1;
 //            }
 //        }
 //        return cnt;
