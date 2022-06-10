@@ -16,7 +16,7 @@ public class GameBoardBuilder implements Builder<Region> {
     private final double lineLength = 200;
     private final double gap = 20;
 
-    GameBoardBuilder(List<GameLine> lines) { // putting GameBoardBuilder2 makes my IDE identify it as a method
+    GameBoardBuilder(List<GameLine> lines) { // putting GameBoardBuilder2 makes my IDE identify it as a method.
         this.lines = lines;
     }
 
@@ -34,7 +34,7 @@ public class GameBoardBuilder implements Builder<Region> {
         return results;
     }
 
-    private Line createLine(GameLine gameLine) { // putting "Node" as the return type is an error for some reason.
+    private Line createLine(GameLine gameLine) { // putting "Node" as the return type is an error since we want it to return Line.
         gameLine.setActivatedProperty(true);
 
         if (gameLine.type.equals(LineType.HORZ)) {
