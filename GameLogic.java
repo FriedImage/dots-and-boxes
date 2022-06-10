@@ -9,7 +9,7 @@ import javafx.beans.property.SimpleObjectProperty;
 public class GameLogic {
 
     private List<GameBox> boxs = new ArrayList<>();
-    private final List<GameLine> gameLines = new ArrayList<>();
+    final List<GameLine> gameLines = new ArrayList<>();
     private final List<GameLine> gameBoxs = new ArrayList<>();
 
 //    BoxOwner activePlayer;
@@ -97,7 +97,7 @@ public class GameLogic {
 
     private void assignCompletedBoxes() {
         for (GameBox gameBox : boxs) {
-            if (gameBox.isBoxComplete() && (gameBox.boxOwner.equals(BoxOwner.NONE))) { // - equals problem
+            if (gameBox.isBoxComplete() && (gameBox.boxOwner.get().equals(BoxOwner.NONE))) { // - equals problem
 //                gameBox.boxOwner = activePlayer;
                 gameBox.boxOwner.set(activePlayer.get()); // not sure if this is correct
             }
@@ -108,7 +108,7 @@ public class GameLogic {
 //        if (this.activePlayer.equals(activePlayer.set(BoxOwner.PLAYER1))) { // - doesn't work
 //        if (this.activePlayer.equals(BoxOwner.PLAYER1)) { // - equals problem
 //        if (this.activePlayer.get(BoxOwner.PLAYER1)) {  // - doesn't work
-        if (this.activePlayer.equals(BoxOwner.NONE)) { // testing code
+        if (activePlayer.get().equals(BoxOwner.PLAYER1)) { // testing code
 //            activePlayer = BoxOwner.PLAYER2;
             activePlayer.set(BoxOwner.PLAYER2);
         } else {
