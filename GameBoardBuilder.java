@@ -2,7 +2,6 @@ package com.test.jfxgame;
 
 import java.util.List;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
