@@ -1,27 +1,28 @@
 package com.test.jfxgame;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import javafx.scene.layout.Region;
+//import javafx.scene.layout.VBox;
+import javafx.util.Builder;
 
 public class App extends Application {
 
-    private static Scene scene;
-
+//    private static Scene scene;
     @Override
     public void start(Stage stage) throws IOException {
-        // run game
-        new GameLogic().runGame();
-        // setup stage
-        Parent root = FXMLLoader.load(getClass().getResource("Game.fxml")); // fxml file for SceneBuilder
-        scene = new Scene(root);
+        // create instance
+        GameLogic gameLogic = new GameLogic();
+        gameLogic.populateBoard(3, 3);
+        Builder<Region> boardBuilder = new GameBoardBuilder(gameLogic.gameLines);
+
+        Scene scene = new Scene(boardBuilder.build());
         stage.setTitle("game fx");
         stage.setScene(scene);
-        stage.show(); // vbox already initialized in SceneBuilder (Game.fxml)
+        stage.show();
     }
 
     public static void main(String[] args) {
