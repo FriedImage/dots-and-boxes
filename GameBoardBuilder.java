@@ -1,7 +1,11 @@
 package com.test.jfxgame;
 
 import java.util.List;
+import javafx.beans.binding.ObjectBinding;
+import javafx.beans.value.ObservableBooleanValue;
+import javafx.beans.value.ObservableObjectValue;
 import javafx.geometry.Insets;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -34,13 +38,12 @@ public class GameBoardBuilder implements Builder<Region> {
     }
 
     private Line createLine(GameLine gameLine) { // putting "Node" as the return type is an error since we want it to return Line.
-        gameLine.setActivatedProperty(true);
-
         if (gameLine.type.equals(LineType.HORZ)) {
-            Line horzLine = new Line();
+            Line horizLine = new Line();
 
-            horzLine.setStroke(Color.GREY);
-            horzLine.setStrokeWidth(4);
+//            horizLine.setStroke(Color.GREY);
+            horizLine.strokeProperty().bind(gameLine.activated.get());
+            horizLine.setStrokeWidth(4);
 
             double x1 = gameLine.column * (lineLength + gap) + (gap / 2);
             double x2 = x1 + lineLength;
@@ -49,14 +52,19 @@ public class GameBoardBuilder implements Builder<Region> {
             double y2 = y1;
 
             // x coordinate
-            horzLine.setStartX(x1);
-            horzLine.setEndX(x2);
+            horizLine.setStartX(x1);
+            horizLine.setEndX(x2);
 
             // y coordinate
-            horzLine.setStartY(y1);
-            horzLine.setEndY(y2);
+            horizLine.setStartY(y1);
+            horizLine.setEndY(y2);
 
-            return horzLine;
+            // event
+            horizLine.setOnMouseClicked((MouseEvent event) -> {
+                gameLine.activated.set(true);
+            });
+
+            return horizLine;
         } else {
             Line vertLine = new Line();
 
@@ -80,6 +88,20 @@ public class GameBoardBuilder implements Builder<Region> {
             return vertLine;
         }
 
+    }
+
+    class CustomBooleanBinding extends ObjectBinding {
+        // me messing up with custom bindings, trying to figure it out
+        ObservableObjectValue<Boolean> blue;
+        ObservableBooleanValue grey;
+        
+        @Override
+        protected Color computeValue() {
+            if () {
+                return Color.BLUE;
+            }
+        }
+        
     }
 
 }
