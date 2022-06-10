@@ -6,12 +6,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import javafx.scene.layout.Region;
-//import javafx.scene.layout.VBox;
 import javafx.util.Builder;
 
 public class App extends Application {
 
-//    private static Scene scene;
     @Override
     public void start(Stage stage) throws IOException {
         // create instance
