@@ -10,12 +10,9 @@ public class GameLine {
 
     LineType type;
 
-//    boolean activated;
     final BooleanProperty activated = new SimpleBooleanProperty(false);
 
     public BooleanProperty getActivatedProperty(GameLine line) {
-
-//        return activated;
         if (line.activated.get()) {
             return line.activated;
         }
@@ -23,7 +20,6 @@ public class GameLine {
     }
 
     public void setActivatedProperty(boolean newActivated) {
-//        this.activated = newActivated;
         this.activated.set(newActivated);
     }
 
@@ -31,7 +27,6 @@ public class GameLine {
         this.column = column;
         this.row = row;
         this.type = type;
-//        this.activated = false;
         this.activated.set(false);
     }
 
