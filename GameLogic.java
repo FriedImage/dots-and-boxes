@@ -105,10 +105,8 @@ public class GameLogic {
     }
 
     private void flipCurrentPlayer() {
-//        if (this.activePlayer.equals(activePlayer.set(BoxOwner.PLAYER1))) { // - doesn't work
 //        if (this.activePlayer.equals(BoxOwner.PLAYER1)) { // - equals problem
-//        if (this.activePlayer.get(BoxOwner.PLAYER1)) {  // - doesn't work
-        if (activePlayer.get().equals(BoxOwner.PLAYER1)) { // testing code
+        if (activePlayer.get().equals(BoxOwner.PLAYER1)) { // works ( .get() with .equals() )
 //            activePlayer = BoxOwner.PLAYER2;
             activePlayer.set(BoxOwner.PLAYER2);
         } else {
