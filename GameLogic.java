@@ -69,15 +69,12 @@ public class GameLogic {
 
     private void playLine(LineType lineType, int column, int row) {
         System.out.println(activePlayer + " Type: " + lineType + " Column: " + column + " Row: " + row);
-//        activateLine(lineType, column, row);
         System.out.println("Boxes completed: " + countCompletedBoxes());
     }
 
     void handleActivatedLine() {
         long startingCompleted = countCompletedBoxes();
 
-//        GameLine gameLine = findOrCreateGameLine(type, column, row);
-//        gameLine.activated.set(true);
         assignCompletedBoxes();
 
         if (countCompletedBoxes() == startingCompleted) {
