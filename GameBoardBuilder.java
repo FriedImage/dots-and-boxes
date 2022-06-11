@@ -51,7 +51,7 @@ public class GameBoardBuilder implements Builder<Region> {
         if (gameLine.type.equals(LineType.HORZ)) {
             Line horizLine = new Line();
 
-            horizLine.strokeProperty().bind(new CustomBooleanBinding(gameLine.activated));
+            horizLine.strokeProperty().bind(new LineColorBinding(gameLine.activated));
             horizLine.setStrokeWidth(4);
 
             double x1 = gameLine.column * (lineLength + gap) + (gap / 2);
@@ -77,7 +77,7 @@ public class GameBoardBuilder implements Builder<Region> {
         } else {
             Line vertLine = new Line();
 
-            vertLine.strokeProperty().bind(new CustomBooleanBinding(gameLine.activated));
+            vertLine.strokeProperty().bind(new LineColorBinding(gameLine.activated));
             vertLine.setStrokeWidth(4);
 
             double x1 = gameLine.column * (lineLength + gap);
@@ -107,26 +107,21 @@ public class GameBoardBuilder implements Builder<Region> {
     private Rectangle createBox(GameBox gameBox) {
         if (gameBox.completed) {
             Rectangle rBox = new Rectangle();
-            rBox.fillProperty().bind(new CustomBooleanBinding(gameBox.boxOwner));
+            rBox.fillProperty().bind(new BoxColorBinding(gameBox.boxOwner));
             return rBox;
         }
         // didn't do any math yet
         return null;
     }
 
-    class CustomBooleanBinding extends ObjectBinding {
+    class LineColorBinding extends ObjectBinding {
 
         ObservableBooleanValue check;
         ObservableObjectValue ownerCheck;
 
-        public CustomBooleanBinding(ObservableBooleanValue check) {
+        public LineColorBinding(ObservableBooleanValue check) {
             super.bind(check);
             this.check = check;
-        }
-
-        public CustomBooleanBinding(ObservableObjectValue ownerCheck) {
-            super.bind(ownerCheck);
-            this.ownerCheck = ownerCheck;
         }
 
         @Override
@@ -141,11 +136,11 @@ public class GameBoardBuilder implements Builder<Region> {
     }
 
     // testing for Boxes
-    class CustomBooleanBinding2 extends ObjectBinding {
+    class BoxColorBinding extends ObjectBinding {
 
         ObservableObjectValue boxCheck;
 
-        public CustomBooleanBinding2(ObservableObjectValue boxCheck) {
+        public BoxColorBinding(ObservableObjectValue boxCheck) {
             super.bind(boxCheck);
             this.boxCheck = boxCheck;
         }
