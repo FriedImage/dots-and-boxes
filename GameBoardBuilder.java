@@ -41,8 +41,7 @@ public class GameBoardBuilder implements Builder<Region> {
         if (gameLine.type.equals(LineType.HORZ)) {
             Line horizLine = new Line();
 
-//            horizLine.setStroke(Color.GREY);
-            horizLine.strokeProperty().bind(gameLine.activated.get());
+            horizLine.strokeProperty().bind(new CustomBooleanBinding(gameLine.activated));
             horizLine.setStrokeWidth(4);
 
             double x1 = gameLine.column * (lineLength + gap) + (gap / 2);
@@ -68,7 +67,7 @@ public class GameBoardBuilder implements Builder<Region> {
         } else {
             Line vertLine = new Line();
 
-            vertLine.setStroke(Color.GREY);
+            vertLine.strokeProperty().bind(new CustomBooleanBinding(gameLine.activated));
             vertLine.setStrokeWidth(4);
 
             double x1 = gameLine.column * (lineLength + gap);
@@ -85,23 +84,35 @@ public class GameBoardBuilder implements Builder<Region> {
             vertLine.setStartY(y1);
             vertLine.setEndY(y2);
 
+            // event
+            vertLine.setOnMouseClicked((MouseEvent event) -> {
+                gameLine.activated.set(true);
+            });
+            
             return vertLine;
         }
 
     }
 
     class CustomBooleanBinding extends ObjectBinding {
+
         // me messing up with custom bindings, trying to figure it out
-        ObservableObjectValue<Boolean> blue;
-        ObservableBooleanValue grey;
-        
+        ObservableBooleanValue check;
+
+        public CustomBooleanBinding(ObservableBooleanValue check) {
+            super.bind(check);
+            this.check = check;
+        }
+
         @Override
         protected Color computeValue() {
-            if () {
+            if (check.get()) {
                 return Color.BLUE;
+            } else {
+                return Color.GREY;
             }
         }
-        
+
     }
 
 }
