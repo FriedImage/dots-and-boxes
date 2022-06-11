@@ -2,9 +2,11 @@ package com.test.jfxgame;
 
 import java.util.List;
 import javafx.beans.binding.ObjectBinding;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ObservableBooleanValue;
 import javafx.beans.value.ObservableObjectValue;
 import javafx.geometry.Insets;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -19,12 +21,15 @@ public class GameBoardBuilder implements Builder<Region> {
     private final List<GameLine> lines;
     private final List<GameBox> boxs;
     private final double lineLength = 200;
+    
 //    private final double boxLength = 200;
     private final double gap = 20;
+    private final ObjectProperty<BoxOwner> activePlayerProperty;
 
-    GameBoardBuilder(List<GameLine> lines, List<GameBox> boxs) { // putting GameBoardBuilder2 makes my IDE identify it as a method.
+    GameBoardBuilder(List<GameLine> lines, List<GameBox> boxs, ObjectProperty<BoxOwner> activePlayerProperty) { // putting GameBoardBuilder2 makes my IDE identify it as a method.
         this.lines = lines;
         this.boxs = boxs;
+        this.activePlayerProperty = activePlayerProperty;
     }
 
     @Override
@@ -43,7 +48,12 @@ public class GameBoardBuilder implements Builder<Region> {
             pane.getChildren().add(box);
         });
 
-        VBox results = new VBox(10, pane);
+        Label plrText = new Label("Current Player: ");
+        Label currentPlayer = new Label(); // new label
+        currentPlayer.setText("Current Player: ");
+        currentPlayer.textProperty().bind(activePlayerProperty.asString());
+        VBox results = new VBox(10, pane, plrText, currentPlayer);
+        
         results.setPadding(new Insets(30));
         return results;
     }
