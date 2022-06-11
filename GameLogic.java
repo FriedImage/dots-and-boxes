@@ -7,11 +7,12 @@ import javafx.beans.property.SimpleObjectProperty;
 
 public class GameLogic {
 
-    private List<GameBox> boxs = new ArrayList<>();
+    List<GameBox> boxs = new ArrayList<>();
     final List<GameLine> gameLines = new ArrayList<>();
     private final List<GameLine> gameBoxs = new ArrayList<>();
 
     final ObjectProperty<BoxOwner> activePlayer = new SimpleObjectProperty<>(BoxOwner.NONE);
+    long startingCompleted = 0;
 
     void runGame() {
         // Setup Game
@@ -73,13 +74,13 @@ public class GameLogic {
     }
 
     void handleActivatedLine() {
-        long startingCompleted = countCompletedBoxes();
-
         assignCompletedBoxes();
 
         if (countCompletedBoxes() == startingCompleted) {
             flipCurrentPlayer();
         }
+
+        startingCompleted = countCompletedBoxes();
     }
 
     private void assignCompletedBoxes() {
