@@ -21,7 +21,7 @@ public class GameBoardBuilder implements Builder<Region> {
     private final List<GameLine> lines;
     private final List<GameBox> boxs;
     private final double lineLength = 200;
-    
+
 //    private final double boxLength = 200;
     private final double gap = 20;
     private final ObjectProperty<BoxOwner> activePlayerProperty;
@@ -50,10 +50,9 @@ public class GameBoardBuilder implements Builder<Region> {
 
         Label plrText = new Label("Current Player: ");
         Label currentPlayer = new Label(); // new label
-        currentPlayer.setText("Current Player: ");
         currentPlayer.textProperty().bind(activePlayerProperty.asString());
         VBox results = new VBox(10, pane, plrText, currentPlayer);
-        
+
         results.setPadding(new Insets(30));
         return results;
     }
