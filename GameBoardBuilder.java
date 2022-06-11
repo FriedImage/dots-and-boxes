@@ -158,9 +158,9 @@ public class GameBoardBuilder implements Builder<Region> {
 
         ObservableObjectValue check;
 
-        public BoxColorBinding(ObservableObjectValue ownerCheck) {
-            super.bind(ownerCheck);
-            this.check = ownerCheck;
+        public BoxColorBinding(ObservableObjectValue check) {
+            super.bind(check);
+            this.check = check;
         }
 
         @Override
