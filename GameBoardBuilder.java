@@ -115,7 +115,6 @@ public class GameBoardBuilder implements Builder<Region> {
     class LineColorBinding extends ObjectBinding {
 
         ObservableBooleanValue check;
-        ObservableObjectValue ownerCheck;
 
         public LineColorBinding(ObservableBooleanValue check) {
             super.bind(check);
@@ -136,18 +135,18 @@ public class GameBoardBuilder implements Builder<Region> {
     // testing for Boxes
     class BoxColorBinding extends ObjectBinding {
 
-        ObservableObjectValue boxCheck;
+        ObservableObjectValue check;
 
-        public BoxColorBinding(ObservableObjectValue boxCheck) {
-            super.bind(boxCheck);
-            this.boxCheck = boxCheck;
+        public BoxColorBinding(ObservableObjectValue ownerCheck) {
+            super.bind(ownerCheck);
+            this.check = ownerCheck;
         }
 
         @Override
         protected Color computeValue() {
-            if (boxCheck.get().equals(BoxOwner.PLAYER1)) {
+            if (check.get().equals(BoxOwner.PLAYER1)) {
                 return Color.RED;
-            } else if (boxCheck.get().equals(BoxOwner.PLAYER2)) {
+            } else if (check.get().equals(BoxOwner.PLAYER2)) {
                 return Color.GREEN;
             } else {
                 return Color.WHITE;
