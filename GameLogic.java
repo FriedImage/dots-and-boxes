@@ -45,6 +45,11 @@ public class GameLogic {
             }
         }
         GameLine newLine = new GameLine(column, row, type);
+        newLine.activated.addListener(ob -> {
+            System.out.println("activated? " + newLine.activated.getValue()); // testing purposes
+            newLine.activated.get();
+            handleActivatedLine();
+        });
         gameLines.add(newLine);
         return newLine;
     }
@@ -64,15 +69,15 @@ public class GameLogic {
 
     private void playLine(LineType lineType, int column, int row) {
         System.out.println(activePlayer + " Type: " + lineType + " Column: " + column + " Row: " + row);
-        activateLine(lineType, column, row);
+//        activateLine(lineType, column, row);
         System.out.println("Boxes completed: " + countCompletedBoxes());
     }
 
-    void activateLine(LineType type, int column, int row) {
+    void handleActivatedLine() {
         long startingCompleted = countCompletedBoxes();
 
-        GameLine gameLine = findOrCreateGameLine(type, column, row);
-        gameLine.activated.set(true);
+//        GameLine gameLine = findOrCreateGameLine(type, column, row);
+//        gameLine.activated.set(true);
         assignCompletedBoxes();
 
         if (countCompletedBoxes() == startingCompleted) {
