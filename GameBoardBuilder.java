@@ -38,8 +38,10 @@ public class GameBoardBuilder implements Builder<Region> {
 
         // box loop
         boxs.forEach(gameBox -> {
-            Rectangle box = createBox(gameBox);
-            pane.getChildren().add(box);
+            if (gameBox.completed) {
+                Rectangle box = createBox(gameBox);
+                pane.getChildren().add(box);
+            }
         });
 
         VBox results = new VBox(10, pane);
@@ -105,13 +107,9 @@ public class GameBoardBuilder implements Builder<Region> {
     }
 
     private Rectangle createBox(GameBox gameBox) {
-        if (gameBox.completed) {
-            Rectangle rBox = new Rectangle();
-            rBox.fillProperty().bind(new BoxColorBinding(gameBox.boxOwner));
-            return rBox;
-        }
-        // didn't do any math yet
-        return null;
+        Rectangle rBox = new Rectangle();
+        rBox.fillProperty().bind(new BoxColorBinding(gameBox.boxOwner));
+        return rBox;
     }
 
     class LineColorBinding extends ObjectBinding {
