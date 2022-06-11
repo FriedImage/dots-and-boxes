@@ -8,6 +8,7 @@ import javafx.beans.value.ObservableObjectValue;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -48,10 +49,11 @@ public class GameBoardBuilder implements Builder<Region> {
             pane.getChildren().add(box);
         });
 
-        Label plrText = new Label("Current Player: ");
+        Label currentPlayerStatic = new Label("Current Player: ");
         Label currentPlayer = new Label(); // new label
         currentPlayer.textProperty().bind(activePlayerProperty.asString());
-        VBox results = new VBox(10, pane, plrText, currentPlayer);
+        HBox players = new HBox(currentPlayerStatic, currentPlayer);
+        VBox results = new VBox(10, pane, players);
 
         results.setPadding(new Insets(30));
         return results;
