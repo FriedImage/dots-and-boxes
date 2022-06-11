@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -20,16 +21,16 @@ import javafx.util.Builder;
 public class GameBoardBuilder implements Builder<Region> {
 
     private final List<GameLine> lines;
-    private final List<GameBox> boxs;
+    private final List<GameBox> boxes;
     private final double lineLength = 200;
 
 //    private final double boxLength = 200;
     private final double gap = 20;
     private final ObjectProperty<BoxOwner> activePlayerProperty;
 
-    GameBoardBuilder(List<GameLine> lines, List<GameBox> boxs, ObjectProperty<BoxOwner> activePlayerProperty) { // putting GameBoardBuilder2 makes my IDE identify it as a method.
+    GameBoardBuilder(List<GameLine> lines, List<GameBox> boxes, ObjectProperty<BoxOwner> activePlayerProperty) { // putting GameBoardBuilder2 makes my IDE identify it as a method.
         this.lines = lines;
-        this.boxs = boxs;
+        this.boxes = boxes;
         this.activePlayerProperty = activePlayerProperty;
     }
 
@@ -44,7 +45,7 @@ public class GameBoardBuilder implements Builder<Region> {
         });
 
         // box loop
-        boxs.forEach(gameBox -> {
+        boxes.forEach(gameBox -> {
             Rectangle box = createBox(gameBox);
             pane.getChildren().add(box);
         });
@@ -52,11 +53,21 @@ public class GameBoardBuilder implements Builder<Region> {
         Label currentPlayerStatic = new Label("Current Player: ");
         Label currentPlayer = new Label(); // new label
         currentPlayer.textProperty().bind(activePlayerProperty.asString());
-        HBox players = new HBox(currentPlayerStatic, currentPlayer);
-        VBox results = new VBox(10, pane, players);
 
-        results.setPadding(new Insets(30));
-        return results;
+        Label player1 = new Label();
+        Label player2 = new Label();
+        Label staticWins = new Label("Wins!");
+        VBox gameOverBox = new VBox(player1, player2, staticWins);
+
+        HBox players = new HBox(currentPlayerStatic, currentPlayer);
+        VBox gameBoard = new VBox(10, pane, players);
+        StackPane results = new StackPane(gameBoard, gameOverBox);
+
+        gameBoard.visibleProperty().bind(gameOver.not());
+        gameOverBox.visibleProperty().bind(gameOver);
+
+        gameBoard.setPadding(new Insets(30));
+        return gameBoard;
     }
 
     private Line createLine(GameLine gameLine) { // putting "Node" as the return type is an error since we want it to return Line.
@@ -176,6 +187,25 @@ public class GameBoardBuilder implements Builder<Region> {
             }
         }
 
+    }
+
+    class GameOverBinding extends ObjectBinding {
+
+        ObservableBooleanValue gameOver;
+
+        public GameOverBinding (GameLogic gameLogic, GameBoardBuilder gameBoardBuilder, ObservableBooleanValue gameOver) {
+            super.bind(gameLogic.gameData.player1Score, gameLogic.gameData.player2Score);
+            this.gameOver = gameLogic.gameData.gameOver;
+            this.gameBoardBuilder = gameBoardBuilder;
+        }
+        
+        @Override
+        protected VBox computeValue() {
+            if (gameOver.get()) {
+                return gameBoardBuilder.;
+            }
+            return null;
+        }
     }
 
 }
