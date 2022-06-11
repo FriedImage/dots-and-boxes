@@ -88,7 +88,7 @@ public class GameBoardBuilder implements Builder<Region> {
             vertLine.setOnMouseClicked((MouseEvent event) -> {
                 gameLine.activated.set(true);
             });
-            
+
             return vertLine;
         }
 
