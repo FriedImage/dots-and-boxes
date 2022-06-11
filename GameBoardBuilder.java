@@ -63,6 +63,7 @@ public class GameBoardBuilder implements Builder<Region> {
         VBox gameBoard = new VBox(10, pane, players);
         StackPane results = new StackPane(gameBoard, gameOverBox);
 
+        // stuck here!
         gameBoard.visibleProperty().bind(gameOver.not());
         gameOverBox.visibleProperty().bind(gameOver);
 
@@ -188,7 +189,8 @@ public class GameBoardBuilder implements Builder<Region> {
         }
 
     }
-
+    
+// also stuck here!
     class GameOverBinding extends ObjectBinding {
 
         ObservableBooleanValue gameOver;
