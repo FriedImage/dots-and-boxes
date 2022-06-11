@@ -3,7 +3,6 @@ package com.test.jfxgame;
 import java.util.List;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.value.ObservableBooleanValue;
-import javafx.beans.value.ObservableObjectValue;
 import javafx.geometry.Insets;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
