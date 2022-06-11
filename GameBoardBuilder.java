@@ -198,15 +198,15 @@ public class GameBoardBuilder implements Builder<Region> {
         public GameOverBinding (GameLogic gameLogic, GameBoardBuilder gameBoardBuilder, ObservableBooleanValue gameOver) {
             super.bind(gameLogic.gameData.player1Score, gameLogic.gameData.player2Score);
             this.gameOver = gameLogic.gameData.gameOver;
-            this.gameBoardBuilder = gameBoardBuilder;
+            this.gameBoardBuilder = gameBoardBuilder.; // ?
         }
         
         @Override
         protected VBox computeValue() {
             if (gameOver.get()) {
-                return gameBoardBuilder.;
+                return gameBoardBuilder.gameOverBox;
             }
-            return null;
+            return null; // i 100% bet this is wrong as well.
         }
     }
 
