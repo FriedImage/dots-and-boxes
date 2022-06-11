@@ -19,6 +19,7 @@ public class GameBoardBuilder implements Builder<Region> {
     private final List<GameLine> lines;
     private final List<GameBox> boxs;
     private final double lineLength = 200;
+//    private final double boxLength = 200;
     private final double gap = 20;
 
     GameBoardBuilder(List<GameLine> lines, List<GameBox> boxs) { // putting GameBoardBuilder2 makes my IDE identify it as a method.
@@ -38,10 +39,8 @@ public class GameBoardBuilder implements Builder<Region> {
 
         // box loop
         boxs.forEach(gameBox -> {
-            if (gameBox.completed) {
-                Rectangle box = createBox(gameBox);
-                pane.getChildren().add(box);
-            }
+            Rectangle box = createBox(gameBox);
+            pane.getChildren().add(box);
         });
 
         VBox results = new VBox(10, pane);
@@ -109,6 +108,19 @@ public class GameBoardBuilder implements Builder<Region> {
     private Rectangle createBox(GameBox gameBox) {
         Rectangle rBox = new Rectangle();
         rBox.fillProperty().bind(new BoxColorBinding(gameBox.boxOwner));
+
+        double x1 = (gameBox.getColumn() * (lineLength + gap) + (gap));
+        double y1 = (gameBox.getRow() * (lineLength + gap) + (gap));
+
+        double height = lineLength - gap;
+        double width = lineLength - gap;
+
+        rBox.setHeight(height);
+        rBox.setWidth(width);
+
+        rBox.setX(x1);
+        rBox.setY(y1);
+
         return rBox;
     }
 
@@ -149,7 +161,7 @@ public class GameBoardBuilder implements Builder<Region> {
             } else if (check.get().equals(BoxOwner.PLAYER2)) {
                 return Color.GREEN;
             } else {
-                return Color.WHITE;
+                return Color.YELLOW;
             }
         }
 
