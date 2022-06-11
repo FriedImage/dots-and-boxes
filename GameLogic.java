@@ -2,23 +2,33 @@ package com.test.jfxgame;
 
 import java.util.ArrayList;
 import java.util.List;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+//import javafx.beans.property.BooleanProperty;
+//import javafx.beans.property.IntegerProperty;
+//import javafx.beans.property.ObjectProperty;
+//import javafx.beans.property.SimpleBooleanProperty;
+//import javafx.beans.property.SimpleIntegerProperty;
+//import javafx.beans.property.SimpleObjectProperty;
 
 public class GameLogic {
-
-    List<GameBox> boxs = new ArrayList<>();
-    final List<GameLine> gameLines = new ArrayList<>();
-    private final List<GameLine> gameBoxs = new ArrayList<>();
-
-    final ObjectProperty<BoxOwner> activePlayer = new SimpleObjectProperty<>(BoxOwner.NONE);
+    
+//    List<GameBox> boxes = new ArrayList<>();
+//    final List<GameLine> gameLines = new ArrayList<>();
+    private final List<GameLine> gameBoxes = new ArrayList<>();
+    
+//    final ObjectProperty<BoxOwner> activePlayer = new SimpleObjectProperty<>(BoxOwner.NONE);
+//    final BooleanProperty gameOver = new SimpleBooleanProperty(false);
+//    IntegerProperty player1Score = new SimpleIntegerProperty(0);
+//    IntegerProperty player2Score = new SimpleIntegerProperty(0);
+    
+    GameData gameData = new GameData();
+    
     long startingCompleted = 0;
-
+    
     void runGame() {
         // Setup Game
         populateBoard(2, 2);
-
-        activePlayer.set(BoxOwner.PLAYER1);
+        
+        gameData.activePlayer.set(BoxOwner.PLAYER1);
         playLine(LineType.VERT, 0, 0);
         playLine(LineType.HORZ, 0, 0);
         playLine(LineType.VERT, 1, 1);
@@ -31,16 +41,16 @@ public class GameLogic {
         playLine(LineType.VERT, 1, 0);
         playLine(LineType.HORZ, 0, 1);
         playLine(LineType.VERT, 0, 1);
-
-        for (GameBox gameBox : boxs) {
+        
+        for (GameBox gameBox : gameData.boxes) {
             System.out.println("Column: " + gameBox.getColumn() + " Row: " + gameBox.getRow() + " Completed: " + gameBox.isBoxComplete() + " Owner: " + gameBox.boxOwner);
         }
-
+        
     }
 
     // new GameLine method ( for-loop version )
     GameLine findOrCreateGameLine(LineType type, int column, int row) {
-        for (GameLine line : gameLines) {
+        for (GameLine line : gameData.gameLines) {
             if ((line.type.equals(type)) && (line.column == column) && (line.row == row)) {
                 return line;
             }
@@ -51,10 +61,10 @@ public class GameLogic {
             newLine.activated.get();
             handleActivatedLine();
         });
-        gameLines.add(newLine);
+        gameData.gameLines.add(newLine);
         return newLine;
     }
-
+    
     void populateBoard(int maxColumns, int maxRows) {
         for (int column = 0; column < maxColumns; column++) {
             for (int row = 0; row < maxRows; row++) {
@@ -62,46 +72,60 @@ public class GameLogic {
                 GameLine bottomLine = findOrCreateGameLine(LineType.HORZ, column, row + 1);
                 GameLine leftLine = findOrCreateGameLine(LineType.VERT, column, row);
                 GameLine rightLine = findOrCreateGameLine(LineType.VERT, column + 1, row);
-
-                boxs.add(new GameBox(topLine, bottomLine, leftLine, rightLine));
+                
+                gameData.boxes.add(new GameBox(topLine, bottomLine, leftLine, rightLine));
             }
         }
     }
-
+    
     private void playLine(LineType lineType, int column, int row) {
-        System.out.println(activePlayer + " Type: " + lineType + " Column: " + column + " Row: " + row);
+        System.out.println(gameData.activePlayer + " Type: " + lineType + " Column: " + column + " Row: " + row);
         System.out.println("Boxes completed: " + countCompletedBoxes());
     }
-
+    
     void handleActivatedLine() {
         assignCompletedBoxes();
-
+        gameData.gameOver.set(countBoxes(BoxOwner.NONE) == 0); // sets if the game is over.
+        gameData.player1Score.set(countBoxes(BoxOwner.PLAYER1));
+        gameData.player2Score.set(countBoxes(BoxOwner.PLAYER2));
+        
         if (countCompletedBoxes() == startingCompleted) {
             flipCurrentPlayer();
         }
-
+        
         startingCompleted = countCompletedBoxes();
     }
-
+    
     private void assignCompletedBoxes() {
-        for (GameBox gameBox : boxs) {
+        for (GameBox gameBox : gameData.boxes) {
             if (gameBox.isBoxComplete() && (gameBox.boxOwner.get().equals(BoxOwner.NONE))) {
-                gameBox.boxOwner.set(activePlayer.get());
+                gameBox.boxOwner.set(gameData.activePlayer.get());
             }
         }
     }
-
+    
     private void flipCurrentPlayer() {
-        if (activePlayer.get().equals(BoxOwner.PLAYER1)) {
-            activePlayer.set(BoxOwner.PLAYER2);
+        if (gameData.activePlayer.get().equals(BoxOwner.PLAYER1)) {
+            gameData.activePlayer.set(BoxOwner.PLAYER2);
         } else {
-            activePlayer.set(BoxOwner.PLAYER1);
+            gameData.activePlayer.set(BoxOwner.PLAYER1);
         }
+    }
+    
+    private int countBoxes(BoxOwner typeToCount) {
+        int results = 0;
+        
+        for (GameBox gameBox : gameData.boxes) {
+            if (gameBox.boxOwner.get().equals(typeToCount)) {
+                results++;
+            }
+        }
+        return results;
     }
 
     // count completed boxes ( stream-iteration version )
     private long countCompletedBoxes() {
-        return boxs.stream()
+        return gameData.boxes.stream()
                 .filter(GameBox::isBoxComplete).count();
     }
 }
