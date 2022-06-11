@@ -15,7 +15,7 @@ public class App extends Application {
         // create instance
         GameLogic gameLogic = new GameLogic();
         gameLogic.populateBoard(3, 3);
-        Builder<Region> boardBuilder = new GameBoardBuilder(gameLogic.gameLines, gameLogic.boxs, gameLogic.activePlayer); // error
+        Builder<Region> boardBuilder = new GameBoardBuilder(gameLogic.gameLines, gameLogic.boxs, gameLogic.activePlayer);
 
         Scene scene = new Scene(boardBuilder.build());
         stage.setTitle("game fx");
