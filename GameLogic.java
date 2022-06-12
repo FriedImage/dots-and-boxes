@@ -2,23 +2,10 @@ package com.test.jfxgame;
 
 import java.util.ArrayList;
 import java.util.List;
-//import javafx.beans.property.BooleanProperty;
-//import javafx.beans.property.IntegerProperty;
-//import javafx.beans.property.ObjectProperty;
-//import javafx.beans.property.SimpleBooleanProperty;
-//import javafx.beans.property.SimpleIntegerProperty;
-//import javafx.beans.property.SimpleObjectProperty;
 
 public class GameLogic {
     
-//    List<GameBox> boxes = new ArrayList<>();
-//    final List<GameLine> gameLines = new ArrayList<>();
     private final List<GameLine> gameBoxes = new ArrayList<>();
-    
-//    final ObjectProperty<BoxOwner> activePlayer = new SimpleObjectProperty<>(BoxOwner.NONE);
-//    final BooleanProperty gameOver = new SimpleBooleanProperty(false);
-//    IntegerProperty player1Score = new SimpleIntegerProperty(0);
-//    IntegerProperty player2Score = new SimpleIntegerProperty(0);
     
     GameData gameData = new GameData();
     
