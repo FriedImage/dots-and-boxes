@@ -66,7 +66,7 @@ public class GameBoardBuilder implements Builder<Region> {
         currentPlayer.textProperty().bind(activePlayerProperty.asString());
 
         Label player = new Label();
-        player.textProperty().bind(new GameOverBinding(player1Score, player2Score));
+        player.textProperty().bind(new WinningPlayerBinding(player1Score, player2Score));
         player.setFont(new Font(20.0));
 
         Label staticWins = new Label("Wins!");
@@ -205,12 +205,12 @@ public class GameBoardBuilder implements Builder<Region> {
 
     }
 
-    class GameOverBinding extends StringBinding {
+    class WinningPlayerBinding extends StringBinding {
 
         IntegerProperty p1Score;
         IntegerProperty p2Score;
 
-        public GameOverBinding(IntegerProperty p1Score, IntegerProperty p2Score) {
+        public WinningPlayerBinding(IntegerProperty p1Score, IntegerProperty p2Score) {
             super.bind(p1Score, p2Score);
             this.p1Score = p1Score;
             this.p2Score = p2Score;
