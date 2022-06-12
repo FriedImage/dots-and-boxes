@@ -9,6 +9,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ObservableBooleanValue;
 import javafx.beans.value.ObservableObjectValue;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -19,6 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.util.Builder;
 
 public class GameBoardBuilder implements Builder<Region> {
@@ -27,7 +29,6 @@ public class GameBoardBuilder implements Builder<Region> {
     private final List<GameBox> boxes;
     private final double lineLength = 100;
 
-//    private final double boxLength = 200;
     private final double gap = 10;
     private final ObjectProperty<BoxOwner> activePlayerProperty;
 
@@ -66,14 +67,18 @@ public class GameBoardBuilder implements Builder<Region> {
 
         Label player = new Label();
         player.textProperty().bind(new GameOverBinding(player1Score, player2Score));
+        player.setFont(new Font(20.0));
+        
         Label staticWins = new Label("Wins!");
+        staticWins.setFont(new Font(40.0));
+        
         VBox gameOverBox = new VBox(player, staticWins);
-
+        gameOverBox.setAlignment(Pos.CENTER);
+        
         HBox players = new HBox(currentPlayerStatic, currentPlayer);
         VBox gameBoard = new VBox(10, pane, players);
         StackPane results = new StackPane(gameBoard, gameOverBox);
 
-        // stuck here!
         gameBoard.visibleProperty().bind(gameOver.not());
         gameOverBox.visibleProperty().bind(gameOver);
 
@@ -200,7 +205,6 @@ public class GameBoardBuilder implements Builder<Region> {
 
     }
 
-// also stuck here!
     class GameOverBinding extends StringBinding {
 
         IntegerProperty p1Score;
