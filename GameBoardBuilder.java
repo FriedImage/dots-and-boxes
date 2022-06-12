@@ -61,6 +61,8 @@ public class GameBoardBuilder implements Builder<Region> {
             pane.getChildren().add(box);
         });
 
+        pane.setStyle("-fx-border-color: red;");
+
         Label currentPlayerStatic = new Label("Current Player: ");
         Label currentPlayer = new Label(); // new label
         currentPlayer.textProperty().bind(activePlayerProperty.asString());
@@ -174,11 +176,7 @@ public class GameBoardBuilder implements Builder<Region> {
         @Override
         protected Color computeValue() {
             if (check.get()) {
-                if (activePlayerProperty.get().equals(BoxOwner.PLAYER1)) {
-                    return Color.BLUE;
-                } else {
-                    return Color.ORANGE;
-                }
+                return Color.BLACK;
             } else {
                 return Color.GREY;
             }
