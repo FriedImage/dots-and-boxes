@@ -39,9 +39,8 @@ public class App extends Application {
         Button startButton = new Button("Start Game");
         startButton.setOnAction(event -> {
             GameLogic gameLogic = new GameLogic();
-            GameData gameData = new GameData();
             gameLogic.populateBoard(columnSpinner.getValue(), rowSpinner.getValue());
-            Builder<Region> boardBuilder = new GameBoardBuilder(gameLogic.gameData.gameLines, gameLogic.gameData.boxes, gameLogic.gameData.activePlayer, gameLogic.gameData.gameOver);
+            Builder<Region> boardBuilder = new GameBoardBuilder(gameLogic.gameData);
             results.setCenter(boardBuilder.build());
         });
 
