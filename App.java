@@ -23,7 +23,7 @@ public class App extends Application {
         // create instance
         Region root = createContent();
         Scene scene = new Scene(root);
-        stage.setTitle("game fx");
+        stage.setTitle("Dots and Boxes");
         stage.setScene(scene);
         stage.show();
     }
