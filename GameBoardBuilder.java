@@ -101,7 +101,7 @@ public class GameBoardBuilder implements Builder<Region> {
     private Line createLine(GameLine gameLine) { // putting "Node" as the return type is an error since we want it to return Line.
         Line line = new Line();
         line.strokeProperty().bind(new LineColorBinding(gameLine.activated));
-        line.setStrokeWidth(4);
+        line.setStrokeWidth(5);
 
         // activation event
         line.setOnMouseClicked((MouseEvent event) -> {
