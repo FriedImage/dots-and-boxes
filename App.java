@@ -28,8 +28,6 @@ public class App extends Application {
         stage.show();
     }
 
-    final double maxFontSize = 30.0;
-
     private Region createContent() {
         BorderPane results = new BorderPane();
         
@@ -51,7 +49,7 @@ public class App extends Application {
 
         Label titleStatic = new Label("Dots and Boxes");
         HBox topBox = new HBox(titleStatic);
-        titleStatic.setFont(new Font(maxFontSize));
+        titleStatic.setFont(new Font(30.0));
         topBox.setAlignment(Pos.CENTER);
 
         results.setTop(topBox);
