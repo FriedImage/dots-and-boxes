@@ -59,7 +59,7 @@ public class GameBoardBuilder implements Builder<Region> {
         Label currentPlayer = new Label(); // new label
         currentPlayer.textProperty().bind(activePlayerProperty.asString());
 
-//        Label player = new Label();
+        player = new Label();
         Label staticWins = new Label("Wins!");
         VBox gameOverBox = new VBox(player, staticWins);
 
