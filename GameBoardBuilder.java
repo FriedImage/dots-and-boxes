@@ -206,7 +206,7 @@ public class GameBoardBuilder implements Builder<Region> {
             if (gameOver.get()) {
                 return gameBoardBuilder.gameOverBox;
             }
-            return null; // i 100% bet this is wrong as well.
+            return null; // possible nullPointerException
         }
     }
 
