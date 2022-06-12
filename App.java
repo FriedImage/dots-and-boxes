@@ -21,7 +21,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // create instance
-        Region root = testingRegion();
+        Region root = createContent();
         Scene scene = new Scene(root);
         stage.setTitle("game fx");
         stage.setScene(scene);
@@ -30,7 +30,7 @@ public class App extends Application {
 
     final double maxFontSize = 30.0;
 
-    private Region testingRegion() {
+    private Region createContent() {
         BorderPane results = new BorderPane();
         
         Spinner<Integer> columnSpinner = new Spinner<>(2, 10, 3);
