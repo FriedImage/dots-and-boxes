@@ -174,7 +174,11 @@ public class GameBoardBuilder implements Builder<Region> {
         @Override
         protected Color computeValue() {
             if (check.get()) {
-                return Color.BLUE;
+                if (activePlayerProperty.get().equals(BoxOwner.PLAYER1)) {
+                    return Color.BLUE;
+                } else {
+                    return Color.ORANGE;
+                }
             } else {
                 return Color.GREY;
             }
