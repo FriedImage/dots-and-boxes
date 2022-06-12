@@ -83,9 +83,12 @@ public class GameBoardBuilder implements Builder<Region> {
         
         player1ScoreLabel.textProperty().bind(player1Score.asString());
         player2ScoreLabel.textProperty().bind(player2Score.asString());
+        HBox scoreP1 = new HBox(5, staticPlayer1Score, player1ScoreLabel);
+        HBox scoreP2 = new HBox(5, staticPlayer2Score, player2ScoreLabel);
+        VBox scores = new VBox(5, scoreP1, scoreP2);
         
-        HBox players = new HBox(6, currentPlayerStatic, currentPlayer, staticPlayer1Score, player1ScoreLabel, staticPlayer2Score, player2ScoreLabel);
-        VBox gameBoard = new VBox(10, pane, players);
+        HBox players = new HBox(5, currentPlayerStatic, currentPlayer);
+        VBox gameBoard = new VBox(10, pane, players, scores);
         StackPane results = new StackPane(gameBoard, gameOverBox);
 
         gameBoard.visibleProperty().bind(gameOver.not());
