@@ -68,7 +68,7 @@ public class GameBoardBuilder implements Builder<Region> {
         gameOverBox.visibleProperty().bind(gameOver);
 
         gameBoard.setPadding(new Insets(30));
-        return gameBoard;
+        return results;
     }
 
     private Line createLine(GameLine gameLine) { // putting "Node" as the return type is an error since we want it to return Line.
