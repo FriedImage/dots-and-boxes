@@ -68,25 +68,25 @@ public class GameBoardBuilder implements Builder<Region> {
         Label player = new Label();
         player.textProperty().bind(new GameOverBinding(player1Score, player2Score));
         player.setFont(new Font(20.0));
-        
+
         Label staticWins = new Label("Wins!");
         staticWins.setFont(new Font(40.0));
-        
+
         VBox gameOverBox = new VBox(player, staticWins);
         gameOverBox.setAlignment(Pos.CENTER);
-        
+
         Label staticPlayer1Score = new Label("Player 1 Score: ");
         Label staticPlayer2Score = new Label("Player 2 Score: ");
-        
+
         Label player1ScoreLabel = new Label("0");
         Label player2ScoreLabel = new Label("0");
-        
+
         player1ScoreLabel.textProperty().bind(player1Score.asString());
         player2ScoreLabel.textProperty().bind(player2Score.asString());
         HBox scoreP1 = new HBox(5, staticPlayer1Score, player1ScoreLabel);
         HBox scoreP2 = new HBox(5, staticPlayer2Score, player2ScoreLabel);
         VBox scores = new VBox(5, scoreP1, scoreP2);
-        
+
         HBox players = new HBox(5, currentPlayerStatic, currentPlayer);
         VBox gameBoard = new VBox(10, pane, players, scores);
         StackPane results = new StackPane(gameBoard, gameOverBox);
@@ -99,58 +99,55 @@ public class GameBoardBuilder implements Builder<Region> {
     }
 
     private Line createLine(GameLine gameLine) { // putting "Node" as the return type is an error since we want it to return Line.
+        Line line = new Line();
+        line.strokeProperty().bind(new LineColorBinding(gameLine.activated));
+        line.setStrokeWidth(4);
+
+        // event
+        line.setOnMouseClicked((MouseEvent event) -> {
+            gameLine.activated.set(true);
+        });
+
+        double x1;
+        double x2;
+
+        double y1;
+        double y2;
+
         if (gameLine.type.equals(LineType.HORZ)) {
-            Line horizLine = new Line();
 
-            horizLine.strokeProperty().bind(new LineColorBinding(gameLine.activated));
-            horizLine.setStrokeWidth(4);
+            x1 = gameLine.column * (lineLength + gap) + (gap / 2);
+            x2 = x1 + lineLength;
 
-            double x1 = gameLine.column * (lineLength + gap) + (gap / 2);
-            double x2 = x1 + lineLength;
-
-            double y1 = gameLine.row * (lineLength + gap);
-            double y2 = y1;
+            y1 = gameLine.row * (lineLength + gap);
+            y2 = y1;
 
             // x coordinate
-            horizLine.setStartX(x1);
-            horizLine.setEndX(x2);
+            line.setStartX(x1);
+            line.setEndX(x2);
 
             // y coordinate
-            horizLine.setStartY(y1);
-            horizLine.setEndY(y2);
+            line.setStartY(y1);
+            line.setEndY(y2);
 
-            // event
-            horizLine.setOnMouseClicked((MouseEvent event) -> {
-                gameLine.activated.set(true);
-            });
-
-            return horizLine;
+            return line;
         } else {
-            Line vertLine = new Line();
 
-            vertLine.strokeProperty().bind(new LineColorBinding(gameLine.activated));
-            vertLine.setStrokeWidth(4);
+            x1 = gameLine.column * (lineLength + gap);
+            x2 = x1;
 
-            double x1 = gameLine.column * (lineLength + gap);
-            double x2 = x1;
-
-            double y1 = gameLine.row * (lineLength + gap) + (gap / 2);
-            double y2 = y1 + lineLength;
+            y1 = gameLine.row * (lineLength + gap) + (gap / 2);
+            y2 = y1 + lineLength;
 
             // x coordinate
-            vertLine.setStartX(x1);
-            vertLine.setEndX(x2);
+            line.setStartX(x1);
+            line.setEndX(x2);
 
             // y coordinate
-            vertLine.setStartY(y1);
-            vertLine.setEndY(y2);
+            line.setStartY(y1);
+            line.setEndY(y2);
 
-            // event
-            vertLine.setOnMouseClicked((MouseEvent event) -> {
-                gameLine.activated.set(true);
-            });
-
-            return vertLine;
+            return line;
         }
 
     }
