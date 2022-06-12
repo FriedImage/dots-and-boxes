@@ -30,12 +30,13 @@ public class GameBoardBuilder implements Builder<Region> {
     private final double gap = 20;
     private final ObjectProperty<BoxOwner> activePlayerProperty;
     BooleanProperty gameOver;
+    Label player = new Label();
 
-    GameBoardBuilder(List<GameLine> lines, List<GameBox> boxes, ObjectProperty<BoxOwner> activePlayerProperty, BooleanProperty gameOver) { // putting GameBoardBuilder2 makes my IDE identify it as a method.
-        this.lines = lines;
-        this.boxes = boxes;
-        this.activePlayerProperty = activePlayerProperty;
-        this.gameOver = gameOver;
+    GameBoardBuilder(GameData gameData) { // putting GameBoardBuilder2 makes my IDE identify it as a method.
+        this.lines = gameData.gameLines;
+        this.boxes = gameData.boxes;
+        this.activePlayerProperty = gameData.activePlayer;
+        this.gameOver = gameData.gameOver;
     }
 
     @Override
@@ -58,7 +59,7 @@ public class GameBoardBuilder implements Builder<Region> {
         Label currentPlayer = new Label(); // new label
         currentPlayer.textProperty().bind(activePlayerProperty.asString());
 
-        Label player = new Label();
+//        Label player = new Label();
         Label staticWins = new Label("Wins!");
         VBox gameOverBox = new VBox(player, staticWins);
 
@@ -69,6 +70,7 @@ public class GameBoardBuilder implements Builder<Region> {
         // stuck here!
         gameBoard.visibleProperty().bind(gameOver.not());
         gameOverBox.visibleProperty().bind(gameOver);
+        player.textProperty().bind(new GameOverBinding());
 
         gameBoard.setPadding(new Insets(30));
         return results;
@@ -210,7 +212,7 @@ public class GameBoardBuilder implements Builder<Region> {
 
         @Override
         protected Label computeValue() {
-            Label player = new Label();
+            
             if (gameOver.get()) {
                 if (player1Score.greaterThan(player2Score).get()) {
                     player.setText("Player 1");
