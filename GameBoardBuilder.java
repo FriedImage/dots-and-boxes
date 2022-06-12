@@ -2,6 +2,8 @@ package com.test.jfxgame;
 
 import java.util.List;
 import javafx.beans.binding.ObjectBinding;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ObservableBooleanValue;
 import javafx.beans.value.ObservableObjectValue;
@@ -27,11 +29,13 @@ public class GameBoardBuilder implements Builder<Region> {
 //    private final double boxLength = 200;
     private final double gap = 20;
     private final ObjectProperty<BoxOwner> activePlayerProperty;
+    BooleanProperty gameOver;
 
-    GameBoardBuilder(List<GameLine> lines, List<GameBox> boxes, ObjectProperty<BoxOwner> activePlayerProperty) { // putting GameBoardBuilder2 makes my IDE identify it as a method.
+    GameBoardBuilder(List<GameLine> lines, List<GameBox> boxes, ObjectProperty<BoxOwner> activePlayerProperty, BooleanProperty gameOver) { // putting GameBoardBuilder2 makes my IDE identify it as a method.
         this.lines = lines;
         this.boxes = boxes;
         this.activePlayerProperty = activePlayerProperty;
+        this.gameOver = gameOver;
     }
 
     @Override
@@ -54,10 +58,9 @@ public class GameBoardBuilder implements Builder<Region> {
         Label currentPlayer = new Label(); // new label
         currentPlayer.textProperty().bind(activePlayerProperty.asString());
 
-        Label player1 = new Label();
-        Label player2 = new Label();
+        Label player = new Label();
         Label staticWins = new Label("Wins!");
-        VBox gameOverBox = new VBox(player1, player2, staticWins);
+        VBox gameOverBox = new VBox(player, staticWins);
 
         HBox players = new HBox(currentPlayerStatic, currentPlayer);
         VBox gameBoard = new VBox(10, pane, players);
@@ -189,22 +192,39 @@ public class GameBoardBuilder implements Builder<Region> {
         }
 
     }
-    
+
 // also stuck here!
     class GameOverBinding extends ObjectBinding {
 
         ObservableBooleanValue gameOver;
+        IntegerProperty player1Score;
+        IntegerProperty player2Score;
 
-        public GameOverBinding (GameLogic gameLogic, GameBoardBuilder gameBoardBuilder, ObservableBooleanValue gameOver) {
-            super.bind(gameLogic.gameData.player1Score, gameLogic.gameData.player2Score);
-            this.gameOver = gameLogic.gameData.gameOver;
-            this.gameBoardBuilder = gameBoardBuilder.; // ?
+        public GameOverBinding(ObservableBooleanValue gameOver, GameData gameData) {
+            super.bind(gameData.player1Score, gameData.player2Score);
+            this.gameOver = gameData.gameOver;
+            this.player1Score = gameData.player1Score;
+            this.player2Score = gameData.player2Score;
+            // ?
         }
-        
+
         @Override
-        protected VBox computeValue() {
+        protected Label computeValue() {
+            Label player = new Label();
             if (gameOver.get()) {
-                return gameBoardBuilder.gameOverBox;
+                if (player1Score.greaterThan(player2Score).get()) {
+                    player.setText("Player 1");
+                    return player;
+                }
+                
+                else if (player2Score.greaterThan(player1Score).get()) {
+                    player.setText("Player 2");
+                    return player;
+                }
+                
+                else {
+                    player.setText("Tie");
+                }
             }
             return null; // possible nullPointerException
         }
