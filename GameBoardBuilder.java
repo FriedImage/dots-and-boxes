@@ -27,7 +27,7 @@ public class GameBoardBuilder implements Builder<Region> {
 
     private final List<GameLine> lines;
     private final List<GameBox> boxes;
-    private final double lineLength = 100;
+    private final double lineLength = 50;
 
     private final double gap = 10;
     private final ObjectProperty<BoxOwner> activePlayerProperty;
@@ -103,7 +103,7 @@ public class GameBoardBuilder implements Builder<Region> {
         line.strokeProperty().bind(new LineColorBinding(gameLine.activated));
         line.setStrokeWidth(4);
 
-        // event
+        // activation event
         line.setOnMouseClicked((MouseEvent event) -> {
             gameLine.activated.set(true);
         });
@@ -122,15 +122,6 @@ public class GameBoardBuilder implements Builder<Region> {
             y1 = gameLine.row * (lineLength + gap);
             y2 = y1;
 
-            // x coordinate
-            line.setStartX(x1);
-            line.setEndX(x2);
-
-            // y coordinate
-            line.setStartY(y1);
-            line.setEndY(y2);
-
-            return line;
         } else {
 
             x1 = gameLine.column * (lineLength + gap);
@@ -139,17 +130,17 @@ public class GameBoardBuilder implements Builder<Region> {
             y1 = gameLine.row * (lineLength + gap) + (gap / 2);
             y2 = y1 + lineLength;
 
-            // x coordinate
-            line.setStartX(x1);
-            line.setEndX(x2);
-
-            // y coordinate
-            line.setStartY(y1);
-            line.setEndY(y2);
-
-            return line;
         }
 
+        // set x coordinate
+        line.setStartX(x1);
+        line.setEndX(x2);
+
+        // set y coordinate
+        line.setStartY(y1);
+        line.setEndY(y2);
+
+        return line;
     }
 
     private Rectangle createBox(GameBox gameBox) {
