@@ -70,7 +70,6 @@ public class GameBoardBuilder implements Builder<Region> {
         // stuck here!
         gameBoard.visibleProperty().bind(gameOver.not());
         gameOverBox.visibleProperty().bind(gameOver);
-        player.textProperty().bind(new GameOverBinding());
 
         gameBoard.setPadding(new Insets(30));
         return results;
