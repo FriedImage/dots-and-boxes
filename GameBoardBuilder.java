@@ -29,8 +29,9 @@ public class GameBoardBuilder implements Builder<Region> {
 //    private final double boxLength = 200;
     private final double gap = 20;
     private final ObjectProperty<BoxOwner> activePlayerProperty;
+    
     BooleanProperty gameOver;
-    Label player = new Label();
+    Label player = new Label("test"); // always shows "test" instead of "Player1" / "Player2" / "Tie".
 
     GameBoardBuilder(GameData gameData) { // putting GameBoardBuilder2 makes my IDE identify it as a method.
         this.lines = gameData.gameLines;
@@ -59,7 +60,7 @@ public class GameBoardBuilder implements Builder<Region> {
         Label currentPlayer = new Label(); // new label
         currentPlayer.textProperty().bind(activePlayerProperty.asString());
 
-        player = new Label();
+//        player = new Label();
         Label staticWins = new Label("Wins!");
         VBox gameOverBox = new VBox(player, staticWins);
 
