@@ -38,7 +38,7 @@ public class GameBox {
         return ((this.column == column) && (this.row == row));
     }
 
-    // Box completion check ( for-loop version )
+    // Box completion check ( true if 4 lines, false otherwise )
     public boolean isBoxComplete() {
         for (GameLine line : sides) {
             if (!line.activated.get()) {
@@ -48,6 +48,7 @@ public class GameBox {
         return true;
     }
 
+    // box structure
     GameBox(GameLine line1, GameLine line2, GameLine line3, GameLine line4) {
         sides.addAll(List.of(line1, line2, line3, line4));
         this.boxOwner.set(BoxOwner.NONE);
