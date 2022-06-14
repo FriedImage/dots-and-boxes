@@ -1,5 +1,3 @@
-package com.test.jfxgame;
-
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.ObjectProperty;
