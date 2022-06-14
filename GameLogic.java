@@ -1,5 +1,3 @@
-package com.test.jfxgame;
-
 public class GameLogic {
 
     // init GameData
@@ -66,7 +64,7 @@ public class GameLogic {
     // testing purpose
     private void playLine(LineType lineType, int column, int row) {
         System.out.println(gameData.activePlayer + " Type: " + lineType + " Column: " + column + " Row: " + row);
-        System.out.println("Boxes completed: " + countCompletedBoxes2());
+        System.out.println("Boxes completed: " + countCompletedBoxes());
     }
 
     void handleActivatedLine() {
@@ -75,11 +73,11 @@ public class GameLogic {
         gameData.player1Score.set(countBoxes(BoxOwner.PLAYER1));
         gameData.player2Score.set(countBoxes(BoxOwner.PLAYER2));
 
-        if (countCompletedBoxes2() == startingCompleted) {
+        if (countCompletedBoxes() == startingCompleted) {
             flipCurrentPlayer();
         }
 
-        startingCompleted = countCompletedBoxes2();
+        startingCompleted = countCompletedBoxes();
     }
 
     // assign completed boxes to the player
@@ -111,14 +109,8 @@ public class GameLogic {
         return results;
     }
 
-    // count current completed boxes ( stream-iteration version )
+    // count current completed boxes
     private long countCompletedBoxes() {
-        return gameData.boxes.stream()
-                .filter(GameBox::isBoxComplete).count();
-    }
-
-    // count current completed boxes ( for loop )
-    private long countCompletedBoxes2() {
         long count = 0;
 
         for (GameBox gameBox : gameData.boxes) {
