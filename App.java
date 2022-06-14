@@ -31,10 +31,11 @@ public class App extends Application {
         stage.show();
     }
 
-    private Region createContent(Stage stage) { // has to require scene
+    private Region createContent(Stage stage) { // has to require stage
 //        BorderPane results = new BorderPane();
         VBox results = new VBox();
 
+        // size spinners ( default values 3x3 )
         Spinner<Integer> columnSpinner = new Spinner<>(2, 10, 3);
         Spinner<Integer> rowSpinner = new Spinner<>(2, 10, 3);
 
@@ -53,12 +54,12 @@ public class App extends Application {
         VBox dummyBox = new VBox();
         dummyBox.setMinHeight(200);
         VBox gameBox = new VBox(dummyBox);
-        
+
         results.getChildren().addAll(topBox, gameBox, bottomBox);
         results.setMinHeight(600);
         stage.minHeightProperty().bind(gameBox.heightProperty().add(150)); // min self adjustable height
         stage.maxHeightProperty().bind(gameBox.heightProperty().add(150)); // max self adjustable height
-        
+
         startButton.setOnAction(event -> {
             GameLogic gameLogic = new GameLogic();
             gameLogic.populateBoard(columnSpinner.getValue(), rowSpinner.getValue());
@@ -71,6 +72,6 @@ public class App extends Application {
 
     public static void main(String[] args) {
         launch(args);
-//        new GameLogic().runGame(); - testing
+//        new GameLogic().runGame(); - console testing
     }
 }
