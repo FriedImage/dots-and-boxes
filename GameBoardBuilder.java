@@ -49,23 +49,23 @@ public class GameBoardBuilder implements Builder<Region> {
     public Region build() {
         Pane pane = new Pane();
 
-        // line loop
+        // add all lines to Pane loop
         lines.forEach(gameLine -> {
             Line line = createLine(gameLine);
             pane.getChildren().add(line);
         });
 
-        // box loop
+        // add all boxes to Pane loop
         boxes.forEach(gameBox -> {
             Rectangle box = createBox(gameBox);
             pane.getChildren().add(box);
         });
 
-        pane.setStyle("-fx-border-color: red;");
+//        pane.setStyle("-fx-border-color: red;"); // see bounds of Pane
 
         Label currentPlayerStatic = new Label("Current Player: ");
         Label currentPlayer = new Label(); // new label
-        currentPlayer.textProperty().bind(activePlayerProperty.asString());
+        currentPlayer.textProperty().bind(activePlayerProperty.asString()); // bind to current player's turn
 
         Label player = new Label();
         player.textProperty().bind(new WinningPlayerBinding(player1Score, player2Score));
@@ -83,8 +83,8 @@ public class GameBoardBuilder implements Builder<Region> {
         Label player1ScoreLabel = new Label("0");
         Label player2ScoreLabel = new Label("0");
 
-        player1ScoreLabel.textProperty().bind(player1Score.asString());
-        player2ScoreLabel.textProperty().bind(player2Score.asString());
+        player1ScoreLabel.textProperty().bind(player1Score.asString()); // bind to PLAYER1 score
+        player2ScoreLabel.textProperty().bind(player2Score.asString()); // bind to PLAYER2 score
         HBox scoreP1 = new HBox(5, staticPlayer1Score, player1ScoreLabel);
         HBox scoreP2 = new HBox(5, staticPlayer2Score, player2ScoreLabel);
         VBox scores = new VBox(5, scoreP1, scoreP2);
@@ -93,13 +93,14 @@ public class GameBoardBuilder implements Builder<Region> {
         VBox gameBoard = new VBox(10, pane, players, scores);
         StackPane results = new StackPane(gameBoard, gameOverBox);
 
-        gameBoard.visibleProperty().bind(gameOver.not());
-        gameOverBox.visibleProperty().bind(gameOver);
+        gameBoard.visibleProperty().bind(gameOver.not()); // GameBoard VBox active while gameOver false
+        gameOverBox.visibleProperty().bind(gameOver); // GameOver VBox not active while gameOver false
 
         gameBoard.setPadding(new Insets(30));
         return results;
     }
 
+    // specs of each line created ( as Line )
     private Line createLine(GameLine gameLine) { // putting "Node" as the return type is an error since we want it to return Line.
         Line line = new Line();
         line.strokeProperty().bind(new LineColorBinding(gameLine.activated));
@@ -145,6 +146,7 @@ public class GameBoardBuilder implements Builder<Region> {
         return line;
     }
 
+    // specs of each box created ( as Rectangle )
     private Rectangle createBox(GameBox gameBox) {
         Rectangle rBox = new Rectangle();
         rBox.fillProperty().bind(new BoxColorBinding(gameBox.boxOwner));
@@ -164,6 +166,7 @@ public class GameBoardBuilder implements Builder<Region> {
         return rBox;
     }
 
+    // binds color of lines depending if a player clicked a line
     class LineColorBinding extends ObjectBinding {
 
         ObservableBooleanValue check;
@@ -184,7 +187,7 @@ public class GameBoardBuilder implements Builder<Region> {
 
     }
 
-    // testing for Boxes
+    // binds color of boxes depending who scored it
     class BoxColorBinding extends ObjectBinding {
 
         ObservableObjectValue check;
@@ -207,6 +210,7 @@ public class GameBoardBuilder implements Builder<Region> {
 
     }
 
+    // binds player text, depending who won
     class WinningPlayerBinding extends StringBinding {
 
         IntegerProperty p1Score;
