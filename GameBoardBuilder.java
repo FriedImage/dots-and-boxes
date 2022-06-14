@@ -1,5 +1,3 @@
-package com.test.jfxgame;
-
 import java.util.List;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.binding.StringBinding;
@@ -10,6 +8,7 @@ import javafx.beans.value.ObservableBooleanValue;
 import javafx.beans.value.ObservableObjectValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -27,7 +26,7 @@ public class GameBoardBuilder implements Builder<Region> {
 
     private final List<GameLine> lines;
     private final List<GameBox> boxes;
-    private final double lineLength = 50;
+    private final double lineLength = 35;
 
     private final double gap = 10;
     private final ObjectProperty<BoxOwner> activePlayerProperty;
@@ -49,11 +48,19 @@ public class GameBoardBuilder implements Builder<Region> {
     public Region build() {
         Pane pane = new Pane();
 
+        double maxX = 0;
+        double maxY = 0;
+
         // add all lines to Pane loop
-        lines.forEach(gameLine -> {
+        for (GameLine gameLine : lines) {
             Line line = createLine(gameLine);
-            pane.getChildren().add(line);
-        });
+            Node rectangle = createRectangle(gameLine);
+            pane.getChildren().addAll(rectangle, line);
+            maxX = Math.max(maxX, line.getEndX());
+            maxY = Math.max(maxY, line.getEndY());
+        }
+
+        pane.setMinSize(maxX + gap, maxY + gap);
 
         // add all boxes to Pane loop
         boxes.forEach(gameBox -> {
@@ -61,11 +68,13 @@ public class GameBoardBuilder implements Builder<Region> {
             pane.getChildren().add(box);
         });
 
-//        pane.setStyle("-fx-border-color: red;"); // see bounds of Pane
+        pane.setMinSize(maxX + 5, maxY + 5); // automatically change min pane size by line size + 5px
+        pane.setMaxSize(maxX + 5, maxY + 5); // automatically change max pane size by line size + 5px
 
-        Label currentPlayerStatic = new Label("Current Player: ");
-        Label currentPlayer = new Label(); // new label
-        currentPlayer.textProperty().bind(activePlayerProperty.asString()); // bind to current player's turn
+        Label player1Indicator = new Label("Current Player -> ");
+        Label player2Indicator = new Label("Current Player -> ");
+        player1Indicator.visibleProperty().bind(activePlayerProperty.isEqualTo(BoxOwner.PLAYER1));
+        player2Indicator.visibleProperty().bind(activePlayerProperty.isEqualTo(BoxOwner.PLAYER2));
 
         Label player = new Label();
         player.textProperty().bind(new WinningPlayerBinding(player1Score, player2Score));
@@ -75,24 +84,34 @@ public class GameBoardBuilder implements Builder<Region> {
         staticWins.setFont(new Font(40.0));
 
         VBox gameOverBox = new VBox(player, staticWins);
-        gameOverBox.setAlignment(Pos.CENTER);
 
-        Label staticPlayer1Score = new Label("Player 1 Score: ");
-        Label staticPlayer2Score = new Label("Player 2 Score: ");
+        Label staticPlayer1Score = new Label("Player 1: ");
+        Label staticPlayer2Score = new Label("Player 2: ");
 
         Label player1ScoreLabel = new Label("0");
         Label player2ScoreLabel = new Label("0");
 
         player1ScoreLabel.textProperty().bind(player1Score.asString()); // bind to PLAYER1 score
         player2ScoreLabel.textProperty().bind(player2Score.asString()); // bind to PLAYER2 score
-        HBox scoreP1 = new HBox(5, staticPlayer1Score, player1ScoreLabel);
-        HBox scoreP2 = new HBox(5, staticPlayer2Score, player2ScoreLabel);
+        HBox scoreP1 = new HBox(5, player1Indicator, staticPlayer1Score, player1ScoreLabel);
+        HBox scoreP2 = new HBox(5, player2Indicator, staticPlayer2Score, player2ScoreLabel);
+
         VBox scores = new VBox(5, scoreP1, scoreP2);
 
-        HBox players = new HBox(5, currentPlayerStatic, currentPlayer);
-        VBox gameBoard = new VBox(10, pane, players, scores);
+        VBox gameBoard = new VBox(10, new StackPane(pane), scoreP1, scoreP2, scores); // added StackPane(pane) to center elements of pane
+
         StackPane results = new StackPane(gameBoard, gameOverBox);
 
+        scoreP1.setAlignment(Pos.CENTER);
+        scoreP2.setAlignment(Pos.CENTER);
+        gameOverBox.setAlignment(Pos.CENTER);
+
+        // debug
+//        pane.setStyle("-fx-border-color: red;");
+//        scoreP1.setStyle("-fx-border-color: yellow");
+//        scoreP2.setStyle("-fx-border-color: orange");
+//        gameBoard.setStyle("-fx-border-color: blue;");
+//        results.setStyle("-fx-border-color: magenta");
         gameBoard.visibleProperty().bind(gameOver.not()); // GameBoard VBox active while gameOver false
         gameOverBox.visibleProperty().bind(gameOver); // GameOver VBox not active while gameOver false
 
@@ -104,7 +123,7 @@ public class GameBoardBuilder implements Builder<Region> {
     private Line createLine(GameLine gameLine) { // putting "Node" as the return type is an error since we want it to return Line.
         Line line = new Line();
         line.strokeProperty().bind(new LineColorBinding(gameLine.activated));
-        line.setStrokeWidth(5);
+        line.setStrokeWidth(3);
 
         // activation event
         line.setOnMouseClicked((MouseEvent event) -> {
@@ -146,6 +165,39 @@ public class GameBoardBuilder implements Builder<Region> {
         return line;
     }
 
+    // optional hitbox lines ( fat rectangles )
+    private Node createRectangle(GameLine gameLine) {
+        double x1;
+        double y1;
+
+        double width;
+        double height;
+
+        if (gameLine.type.equals(LineType.HORZ)) {
+            x1 = gameLine.column * (lineLength + gap) + (gap / 2);
+            y1 = gameLine.row * (lineLength + gap) - gap;
+
+            width = lineLength;
+            height = gap * 2;
+        } else {
+            x1 = gameLine.column * (lineLength + gap) - gap;
+            y1 = gameLine.row * (lineLength + gap) + (gap / 2);
+
+            width = gap * 2;
+            height = lineLength;
+        }
+
+        Rectangle rectangle = new Rectangle(x1, y1, width, height);
+        rectangle.setStroke(Color.web("F4F4F4")); // hide rectangle
+        rectangle.setFill(Color.web("F4F4F4")); // hide rectangle
+        rectangle.setStrokeWidth(1);
+        rectangle.setOnMouseClicked((MouseEvent event) -> {
+            gameLine.activated.set(true);
+        });
+
+        return rectangle;
+    }
+
     // specs of each box created ( as Rectangle )
     private Rectangle createBox(GameBox gameBox) {
         Rectangle rBox = new Rectangle();
@@ -181,7 +233,7 @@ public class GameBoardBuilder implements Builder<Region> {
             if (check.get()) {
                 return Color.BLACK;
             } else {
-                return Color.GREY;
+                return Color.LIGHTGREY;
             }
         }
 
@@ -204,7 +256,7 @@ public class GameBoardBuilder implements Builder<Region> {
             } else if (check.get().equals(BoxOwner.PLAYER2)) {
                 return Color.GREEN;
             } else {
-                return Color.YELLOW;
+                return Color.web("F4F4F4");
             }
         }
 
