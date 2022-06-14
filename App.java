@@ -1,5 +1,3 @@
-package com.test.jfxgame;
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -25,7 +23,7 @@ public class App extends Application {
         Region root = createContent(stage); // added stage
         Scene scene = new Scene(root);
         stage.setTitle("Dots and Boxes");
-//        stage.setResizable(false);
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.sizeToScene();
         stage.show();
@@ -52,13 +50,25 @@ public class App extends Application {
         topBox.setAlignment(Pos.CENTER);
 
         VBox dummyBox = new VBox();
-        dummyBox.setMinHeight(200);
+        dummyBox.setMinHeight(500); // resizes first time window
         VBox gameBox = new VBox(dummyBox);
 
         results.getChildren().addAll(topBox, gameBox, bottomBox);
         results.setMinHeight(600);
-        stage.minHeightProperty().bind(gameBox.heightProperty().add(150)); // min self adjustable height
-        stage.maxHeightProperty().bind(gameBox.heightProperty().add(150)); // max self adjustable height
+
+//        stage.minHeightProperty().bind(gameBox.heightProperty().add(150)); // min self adjustable height
+//        stage.maxHeightProperty().bind(gameBox.heightProperty().add(150)); // max self adjustable height
+        // window size fix
+        gameBox.heightProperty().addListener(ob -> {
+            stage.setHeight(gameBox.getHeight() + 150.0);
+        });
+
+        // maximized window size fix
+        stage.heightProperty().addListener(ob -> {
+            if (!stage.maximizedProperty().get()) {
+                stage.setHeight(gameBox.getHeight() + 150.0);
+            }
+        });
 
         startButton.setOnAction(event -> {
             GameLogic gameLogic = new GameLogic();
