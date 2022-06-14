@@ -1,11 +1,6 @@
 package com.test.jfxgame;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class GameLogic {
-
-    private final List<GameLine> gameBoxes = new ArrayList<>();
 
     // init GameData
     GameData gameData = new GameData();
@@ -46,7 +41,7 @@ public class GameLogic {
         }
         GameLine newLine = new GameLine(column, row, type);
         newLine.activated.addListener(ob -> {
-            System.out.println("activated? " + newLine.activated.getValue()); // testing purposes
+            System.out.println("Line Activated: " + newLine.activated.getValue()); // testing purposes
             newLine.activated.get();
             handleActivatedLine();
         });
@@ -129,7 +124,7 @@ public class GameLogic {
         for (GameBox gameBox : gameData.boxes) {
             if (gameBox.isBoxComplete()) {
                 count++;
-//                System.out.println(cnt);
+//                System.out.println(count);
             }
         }
 
