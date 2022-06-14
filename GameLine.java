@@ -23,6 +23,7 @@ public class GameLine {
         this.activated.set(newActivated);
     }
 
+    // line structure
     GameLine(int column, int row, LineType type) {
         this.column = column;
         this.row = row;
